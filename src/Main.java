@@ -47,16 +47,14 @@ public class Main {
 			for(int j=0;j<line2.length;j++) {
 				int p = 0;
 				if(i!=0&&j!=0) {
-					int option1 = pointMatrix[i-1][j];
-					int option2 = pointMatrix[i][j-1];
-					
-					int option12 = Math.max(option1,  option2);
+					int option12 = Math.max(pointMatrix[i-1][j],  pointMatrix[i][j-1]);
 					
 					int option3 = pointMatrix[i-1][j-1] + dropTwoLemmings(line1[i], line2[j]);
 					
 					p=Math.max(option12,  option3);
 					if(p==option3)minPairs++;
 				}
+				pointMatrix[i][j] = p;
 			}
 		}
 		
