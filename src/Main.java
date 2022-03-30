@@ -45,7 +45,7 @@ public class Main {
 				lemmingsSecondLine[k] = new Lemming(line[0].trim().charAt(0), Integer.parseInt(line[1]));
 			}
 
-			if (lemmingsFirstLine.length != 0 && lemmingsSecondLine.length !=0)
+			if (lemmingsFirstLine.length != 0 && lemmingsSecondLine.length != 0)
 				calc(lemmingsFirstLine, lemmingsSecondLine);
 			else
 				System.out.println("0 0");
@@ -63,17 +63,16 @@ public class Main {
 	private static void calc(Lemming[] line1, Lemming[] line2) {
 		int minPairs = 0;
 
-		int[][] pointMatrix = new int[line1.length+1][line2.length+1];
+		int[][] pointMatrix = new int[line1.length + 1][line2.length + 1];
 
-		for (int i = 0; i < line1.length+1; i++) {
-			//solucao alternativa j=i ver qual e maior e ir so de j=i ate length
-			for (int j = 0; j < line2.length+1; j++) {
+		for (int i = 0; i < line1.length + 1; i++) {
+			for (int j = 0; j < line2.length + 1; j++) {
 				int p = 0;
 				if (i != 0 && j != 0) {
 					int option12 = Math.max(pointMatrix[i - 1][j], pointMatrix[i][j - 1]);
 
-					int drop = dropTwoLemmings(line1[i-1],line2[j-1]);
-					if(drop>0)
+					int drop = dropTwoLemmings(line1[i - 1], line2[j - 1]);
+					if (drop > 0)
 						minPairs++;
 					int option3 = pointMatrix[i - 1][j - 1] + drop;
 					p = Math.max(option12, option3);
@@ -82,7 +81,7 @@ public class Main {
 			}
 		}
 
-		System.out.println(pointMatrix[line1.length][line2.length] + " " + minPairs/2);
+		System.out.println(pointMatrix[line1.length][line2.length] + " " + minPairs / 2);
 	}
 
 	/**
@@ -93,9 +92,7 @@ public class Main {
 	 * @return points generated
 	 */
 	private static int dropTwoLemmings(Lemming l1, Lemming l2) {
-		if(l1.tribe == l2.tribe)
-			return l1.points + l2.points;
-		return 0;
+		return l1.tribe == l2.tribe ? l1.points + l2.points : 0;
 	}
 
 }
