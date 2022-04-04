@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import lemming.Lemming;
-import point.Point;
 
 /**
  * 
@@ -47,7 +46,7 @@ public class Main {
 			}
 
 			if (lemmingsFirstLine.length > 0 && lemmingsSecondLine.length > 0)
-				calc(lemmingsFirstLine, lemmingsSecondLine);
+				System.out.println(calc(lemmingsFirstLine, lemmingsSecondLine));
 			else
 				System.out.println("0 0");
 		}
@@ -61,51 +60,59 @@ public class Main {
 	 * @param line1 - line of Lemmings
 	 * @param line2 - line of Lemmings
 	 */
-	private static void calc(Lemming[] line1, Lemming[] line2) {
-		Point[][] pointMatrix = new Point[line1.length + 1][line2.length + 1];
 
-		//filling the pointMatrix bottomup
+	private static String calc(Lemming[] line1, Lemming[] line2) {
+		long[][] pointMatrix = new long[line1.length + 1][line2.length + 1];
+
+		int[][] pairsMatrix = new int[line1.length + 1][line2.length + 1];
+
+		long points = 0;
+		int pairs = 0;
+		// filling the pointMatrix bottomup
 		for (int i = 0; i < line1.length + 1; i++) {
 			for (int j = 0; j < line2.length + 1; j++) {
-				Point p = new Point(0, 0);
-				
-				//no points if one of the lines is empty
-				if (i != 0 && j != 0) {
-					long option1 = pointMatrix[i - 1][j].points;
+				points = 0;
+				pairs = 0;
 
-					long option2 = pointMatrix[i][j - 1].points;
+				// no points if one of the lines is empty
+				if (i != 0 && j != 0) {
+					long option1 = pointMatrix[i - 1][j];
+
+					long option2 = pointMatrix[i][j - 1];
 
 					long drop = dropTwoLemmings(line1[i - 1], line2[j - 1]);
-					long option3 = pointMatrix[i - 1][j - 1].points + dropTwoLemmings(line1[i - 1], line2[j - 1]);
+					long option3 = pointMatrix[i - 1][j - 1] + drop;
 
-					//which option generates most points
-					//if there are two option with maxPoints -> tie break with minPairs
+					// which option generates most points
+					// if there are two option with maxPoints -> tie break with minPairs
 					if (option1 >= option2 && option1 >= option3) {
-						if (option1 == option2)
-							p = new Point(option1, Math.min(pointMatrix[i - 1][j].pairs, pointMatrix[i][j - 1].pairs));
-						else
-							p = new Point(option1, pointMatrix[i - 1][j].pairs);
-
+						points = option1;
+						if (option1 == option2) {
+							pairs = Math.min(pairsMatrix[i - 1][j], pairsMatrix[i][j - 1]);
+						} else {
+							pairs = pairsMatrix[i - 1][j];
+						}
 					}
 					if (option2 >= option1 && option2 >= option3) {
+						points = option2;
 						if (option1 == option2)
-							p = new Point(option1, Math.min(pointMatrix[i - 1][j].pairs, pointMatrix[i][j - 1].pairs));
+							pairs = Math.min(pairsMatrix[i - 1][j], pairsMatrix[i][j - 1]);
 						else
-							p = new Point(option2, pointMatrix[i][j - 1].pairs);
+							pairs = pairsMatrix[i][j - 1];
 
 					}
 					if (option3 > option1 && option3 > option2) {
-						p = new Point(option3,
-								drop > 0 ? pointMatrix[i - 1][j - 1].pairs + 1 : pointMatrix[i - 1][j - 1].pairs);
+						points = option3;
+						pairs = drop > 0 ? pairsMatrix[i - 1][j - 1] + 1 : pairsMatrix[i - 1][j - 1];
 					}
 				}
-				pointMatrix[i][j] = p;
+				pointMatrix[i][j] = points;
+				pairsMatrix[i][j] = pairs;
 
 			}
 		}
 
-		System.out.println(
-				pointMatrix[line1.length][line2.length].points + " " + pointMatrix[line1.length][line2.length].pairs);
+		return pointMatrix[line1.length][line2.length] + " " + pairsMatrix[line1.length][line2.length];
 	}
 
 	/**
