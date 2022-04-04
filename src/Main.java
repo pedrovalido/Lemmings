@@ -45,9 +45,10 @@ public class Main {
 				lemmingsSecondLine[k] = new Lemming(line[0].trim().charAt(0), Integer.parseInt(line[1]));
 			}
 
-			if (lemmingsFirstLine.length > 0 && lemmingsSecondLine.length > 0)
-				System.out.println(calc(lemmingsFirstLine, lemmingsSecondLine));
-			else
+			if (lemmingsFirstLine.length > 0 && lemmingsSecondLine.length > 0) {
+				long[] ans = calc(lemmingsFirstLine, lemmingsSecondLine);
+				System.out.println(ans[0] + " " + ans[1]);
+			} else
 				System.out.println("0 0");
 		}
 
@@ -60,28 +61,31 @@ public class Main {
 	 * @param line1 - line of Lemmings
 	 * @param line2 - line of Lemmings
 	 */
-
-	private static String calc(Lemming[] line1, Lemming[] line2) {
+	private static long[] calc(Lemming[] line1, Lemming[] line2) {
 		long[][] pointMatrix = new long[line1.length + 1][line2.length + 1];
 
 		int[][] pairsMatrix = new int[line1.length + 1][line2.length + 1];
 
+		// saving memory allocations
 		long points = 0;
 		int pairs = 0;
-		// filling the pointMatrix bottomup
+		long option1 = 0;
+		long option2 = 0;
+		long option3 = 0;
+		long drop = 0;
+
+		// filling the pointMatrix bottom-up
 		for (int i = 0; i < line1.length + 1; i++) {
 			for (int j = 0; j < line2.length + 1; j++) {
-				points = 0;
-				pairs = 0;
 
 				// no points if one of the lines is empty
 				if (i != 0 && j != 0) {
-					long option1 = pointMatrix[i - 1][j];
+					option1 = pointMatrix[i - 1][j];
 
-					long option2 = pointMatrix[i][j - 1];
+					option2 = pointMatrix[i][j - 1];
 
-					long drop = dropTwoLemmings(line1[i - 1], line2[j - 1]);
-					long option3 = pointMatrix[i - 1][j - 1] + drop;
+					drop = dropTwoLemmings(line1[i - 1], line2[j - 1]);
+					option3 = pointMatrix[i - 1][j - 1] + drop;
 
 					// which option generates most points
 					// if there are two option with maxPoints -> tie break with minPairs
@@ -105,14 +109,22 @@ public class Main {
 						points = option3;
 						pairs = drop > 0 ? pairsMatrix[i - 1][j - 1] + 1 : pairsMatrix[i - 1][j - 1];
 					}
+				} else {
+					points = 0;
+					pairs = 0;
 				}
+
 				pointMatrix[i][j] = points;
 				pairsMatrix[i][j] = pairs;
 
 			}
 		}
 
-		return pointMatrix[line1.length][line2.length] + " " + pairsMatrix[line1.length][line2.length];
+		pairs = pairsMatrix[line1.length][line2.length];
+		points = pointMatrix[line1.length][line2.length];
+		long[] res = { pairs, points };
+
+		return res;
 	}
 
 	/**
