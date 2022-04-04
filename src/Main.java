@@ -72,7 +72,7 @@ public class Main {
 
 					long option2 = pointMatrix[i][j - 1].points;
 
-					int drop = dropTwoLemmings(line1[i - 1], line2[j - 1]);
+					long drop = dropTwoLemmings(line1[i - 1], line2[j - 1]);
 					long option3 = pointMatrix[i - 1][j - 1].points + dropTwoLemmings(line1[i - 1], line2[j - 1]);
 
 					//which option generates most points
@@ -112,7 +112,7 @@ public class Main {
 	 * @param l2 - Lemming
 	 * @return points generated
 	 */
-	private static int dropTwoLemmings(Lemming l1, Lemming l2) {
+	private static long dropTwoLemmings(Lemming l1, Lemming l2) {
 		return l1.tribe == l2.tribe ? l1.points + l2.points : 0;
 	}
 
