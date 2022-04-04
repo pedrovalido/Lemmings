@@ -123,7 +123,7 @@ public class Main {
 	 * @return points generated
 	 */
 	private static long dropTwoLemmings(Lemming l1, Lemming l2) {
-		return l1.tribe == l2.tribe ? l1.points + l2.points : 0;
+		return l1.getTribe() == l2.getTribe() ? l1.getPoints() + l2.getPoints() : 0;
 	}
 
 }
