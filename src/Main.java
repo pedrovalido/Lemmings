@@ -91,24 +91,18 @@ public class Main {
 					// if there are two option with maxPoints -> tie break with minPairs
 					if (option1 >= option2 && option1 >= option3) {
 						points = option1;
-						if (option1 == option2) {
-							pairs = Math.min(pairsMatrix[i - 1][j], pairsMatrix[i][j - 1]);
-						} else {
-							pairs = pairsMatrix[i - 1][j];
-						}
-					}
-					if (option2 >= option1 && option2 >= option3) {
-						points = option2;
-						if (option1 == option2)
-							pairs = Math.min(pairsMatrix[i - 1][j], pairsMatrix[i][j - 1]);
-						else
-							pairs = pairsMatrix[i][j - 1];
+						pairs = option1 == option2 ? Math.min(pairsMatrix[i - 1][j], pairsMatrix[i][j - 1])
+								: pairsMatrix[i - 1][j];
 
-					}
-					if (option3 > option1 && option3 > option2) {
+					} else if (option2 > option1 && option2 >= option3) {
+						points = option2;
+						pairs = pairsMatrix[i][j - 1];
+
+					} else if (option3 > option1 && option3 > option2) {
 						points = option3;
 						pairs = drop > 0 ? pairsMatrix[i - 1][j - 1] + 1 : pairsMatrix[i - 1][j - 1];
 					}
+					
 				} else {
 					points = 0;
 					pairs = 0;
@@ -120,11 +114,7 @@ public class Main {
 			}
 		}
 
-		pairs = pairsMatrix[line1.length][line2.length];
-		points = pointMatrix[line1.length][line2.length];
-		long[] res = { points, pairs };
-
-		return res;
+		return new long[] { pointMatrix[line1.length][line2.length], pairsMatrix[line1.length][line2.length] };
 	}
 
 	/**
