@@ -64,9 +64,12 @@ public class Main {
 	private static void calc(Lemming[] line1, Lemming[] line2) {
 		Point[][] pointMatrix = new Point[line1.length + 1][line2.length + 1];
 
+		//filling the pointMatrix bottomup
 		for (int i = 0; i < line1.length + 1; i++) {
 			for (int j = 0; j < line2.length + 1; j++) {
 				Point p = new Point(0, 0);
+				
+				//no points if one of the lines is empty
 				if (i != 0 && j != 0) {
 					long option1 = pointMatrix[i - 1][j].points;
 
