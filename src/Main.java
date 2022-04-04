@@ -46,8 +46,6 @@ public class Main {
 				lemmingsSecondLine[k] = new Lemming(line[0].trim().charAt(0), Integer.parseInt(line[1]));
 			}
 
-//			System.out.println("GAME1");
-
 			if (lemmingsFirstLine.length > 0 && lemmingsSecondLine.length > 0)
 				calc(lemmingsFirstLine, lemmingsSecondLine);
 			else
@@ -77,6 +75,8 @@ public class Main {
 					int drop = dropTwoLemmings(line1[i - 1], line2[j - 1]);
 					long option3 = pointMatrix[i - 1][j - 1].points + dropTwoLemmings(line1[i - 1], line2[j - 1]);
 
+					//which option generates most points
+					//if there are two option with maxPoints -> tie break with minPairs
 					if (option1 >= option2 && option1 >= option3) {
 						if (option1 == option2)
 							p = new Point(option1, Math.min(pointMatrix[i - 1][j].pairs, pointMatrix[i][j - 1].pairs));
@@ -92,30 +92,12 @@ public class Main {
 
 					}
 					if (option3 > option1 && option3 > option2) {
-//
-//						System.out.println(
-//								"antes :" + pointMatrix[i - 1][j - 1].points + " " + pointMatrix[i - 1][j - 1].pairs);
 						p = new Point(option3,
 								drop > 0 ? pointMatrix[i - 1][j - 1].pairs + 1 : pointMatrix[i - 1][j - 1].pairs);
-
-//						System.out.println("depois " + p.points + " " + p.pairs);
 					}
-
 				}
 				pointMatrix[i][j] = p;
 
-//				System.out.println();
-//				System.out.println("matrix " + i + "," + j);
-//				for (int k = 0; k < pointMatrix.length; k++) {
-//					String line = "";
-//					for (int k1 = 0; k1 < pointMatrix[k].length; k1++) {
-//						if (pointMatrix[k][k1] == null)
-//							line += "0,0 ";
-//						else
-//							line += pointMatrix[k][k1].points + "," + pointMatrix[k][k1].pairs + " ";
-//					}
-//					System.out.println(line);
-//				}
 			}
 		}
 
