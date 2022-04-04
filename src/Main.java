@@ -122,7 +122,7 @@ public class Main {
 
 		pairs = pairsMatrix[line1.length][line2.length];
 		points = pointMatrix[line1.length][line2.length];
-		long[] res = { pairs, points };
+		long[] res = { points, pairs };
 
 		return res;
 	}
