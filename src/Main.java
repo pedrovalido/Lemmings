@@ -63,7 +63,6 @@ public class Main {
 	 */
 	private static long[] calc(Lemming[] line1, Lemming[] line2) {
 		long[][] pointMatrix = new long[line1.length + 1][line2.length + 1];
-
 		int[][] pairsMatrix = new int[line1.length + 1][line2.length + 1];
 
 		// saving memory allocations
@@ -102,18 +101,15 @@ public class Main {
 						points = option3;
 						pairs = drop > 0 ? pairsMatrix[i - 1][j - 1] + 1 : pairsMatrix[i - 1][j - 1];
 					}
-					
+
 				} else {
 					points = 0;
 					pairs = 0;
 				}
-
 				pointMatrix[i][j] = points;
 				pairsMatrix[i][j] = pairs;
-
 			}
 		}
-
 		return new long[] { pointMatrix[line1.length][line2.length], pairsMatrix[line1.length][line2.length] };
 	}
 
